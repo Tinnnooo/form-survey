@@ -31,6 +31,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::middleware('auth:sanctum')->group(function() {
         Route::post('forms', [FormController::class, 'storeForm']);
         Route::get('forms', [FormController::class, 'getAllUserForm']);
+        Route::get('forms/{slug}', [FormController::class, 'getDetailForm']);
     });
 });
 

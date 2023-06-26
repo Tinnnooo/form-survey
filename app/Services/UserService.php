@@ -28,14 +28,14 @@ class UserService
 
     public function authenticate(array $credentials): User
     {
-        if(!Auth::attempt($credentials)){
+        if(!Auth::once($credentials)){
             throw new ModelNotFoundException;
         }
 
         $user = Auth::user();
         $user = $this->regenerateUserToken($user);
 
-        auth()->setUser($user);
+        // auth()->setUser($user);
 
         return $user;
     }

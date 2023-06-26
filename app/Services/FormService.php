@@ -6,11 +6,13 @@ use Exception;
 use App\Models\Form;
 use App\Models\AllowedDomain;
 use Illuminate\Support\Facades\DB;
-use App\Traits\RespondsWithHttpStatus;
 use App\Exceptions\DataNotFoundException;
+use App\Exceptions\ForbiddenAccessDomain;
+use App\Exceptions\NotFoundException;
 
 class FormService
 {
+
     public function newForm(array $userForm, int $user_id)
     {
         DB::beginTransaction();
@@ -26,11 +28,12 @@ class FormService
 
             $this->storeFormAllowedDomain($userForm, $user_form);
 
+            DB::commit();
             return $user_form;
 
-            DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
         }
     }
 
@@ -57,5 +60,30 @@ class FormService
         }
 
         return $user_forms;
+    }
+
+    public function getDetailForm($slug)
+    {
+        $form = Form::where("slug", $slug)->first();
+
+        if(empty($form)){
+            throw new NotFoundException('Form not found');
+        }
+
+        $this->userDomainCheck(auth()->user(), $form);
+
+        return $form;
+    }
+
+    public function userDomainCheck($user, $form)
+    {
+        $user_domain = substr(strrchr($user->email, "@"), 1);
+        $allowed_domain = $form->allowedDomains->pluck("domain")->toArray();
+
+        if($allowed_domain) {
+            if (!in_array($user_domain, $allowed_domain)){
+                throw new ForbiddenAccessDomain("Forbidden access");
+            }
+        }
     }
 }

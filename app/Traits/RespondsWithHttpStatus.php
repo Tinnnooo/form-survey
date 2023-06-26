@@ -22,4 +22,11 @@ trait RespondsWithHttpStatus
             "message" => $message,
         ], $status);
     }
+
+    public function respondNotFound($message, $status = 404)
+    {
+        return response()->json([
+            "message" => $message,
+        ], $status);
+    }
 }

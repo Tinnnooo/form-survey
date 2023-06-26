@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Services\UserService;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
-use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\RespondsWithHttpStatus;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
