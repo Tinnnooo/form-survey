@@ -24,4 +24,9 @@ class Form extends Model
     public function allowedDomains(){
         return $this->hasMany(AllowedDomain::class);
     }
+
+    public function Questions(){
+        return $this->hasMany(Question::class);
+    }
+
 }

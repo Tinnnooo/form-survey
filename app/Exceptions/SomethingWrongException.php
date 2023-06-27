@@ -5,12 +5,13 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\Request;
 
-class DataNotFoundException extends Exception
+
+class SomethingWrongException extends Exception
 {
     public function render(Request $request)
     {
         return response()->json([
-            "message" => 'Data is not available'
-        ], 404);
+            "message" => 'Something went wrong, Try again.',
+        ], 500);
     }
 }

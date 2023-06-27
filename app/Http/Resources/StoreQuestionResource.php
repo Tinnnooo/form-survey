@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class StoreQuestionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,14 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "message" => "Login success",
-            "user" => [
+            "message" => "Add questions success",
+            "question" => [
                 "name" => $this->name,
-                "email" => $this->email,
-                "accessToken" => $this->createToken('login-token')->plainTextToken,
+                "choice_type" => $this->choice_type,
+                "is_required" => $this->is_required,
+                "choices" => $this->choices,
+                "form_id" => $this->form_id,
+                "id" => $this->id,
             ]
         ];
     }

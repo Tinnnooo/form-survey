@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ResponseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +33,11 @@ Route::group(['prefix' => 'v1'], function() {
     Route::middleware('auth:sanctum')->group(function() {
         Route::post('forms', [FormController::class, 'storeForm']);
         Route::get('forms', [FormController::class, 'getAllUserForm']);
-        Route::get('forms/{slug}', [FormController::class, 'getDetailForm']);
+        Route::get('forms/{form_slug}', [FormController::class, 'getDetailForm']);
+        Route::post('forms/{form_slug}/questions', [QuestionController::class, 'AddQuestionToForm']);
+        Route::delete('forms/{form_slug}/questions/{question_id}', [QuestionController::class, "RemoveQuestionFromForm"]);
+        Route::post('forms/{form_slug}/responses', [ResponseController::class, 'SubmitResponse']);
+        Route::get('forms/{form_slug}/responses', [ResponseController::class, "GetAllFormResponses"]);
     });
 });
 

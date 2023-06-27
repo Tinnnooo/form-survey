@@ -4,12 +4,12 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ForbiddenAccessDomain extends Exception
+class UnprocessedDataException extends Exception
 {
     public function render($request)
     {
         return response()->json([
             'message' => $this->getMessage()
-        ], 403);
+        ], 422);
     }
 }

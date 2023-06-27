@@ -20,4 +20,13 @@ class Question extends Model
     protected $casts = [
         "is_required" => "boolean"
     ];
+
+    public function Form(){
+        return $this->belongsTo(Form::class, "form_id");
+    }
+
+    public function Answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
 }

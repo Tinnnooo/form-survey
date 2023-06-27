@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Question;
 use App\Traits\RespondsWithHttpStatus;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreQuestionRequest extends FormRequest
+class SubmitResponseRequest extends FormRequest
 {
     use RespondsWithHttpStatus;
     /**
@@ -26,12 +28,21 @@ class StoreQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required",
-            "choice_type" => "required|in:short answer,paragraph,date,multiple choice,dropdown,checkboxes",
-            "is_required" => "nullable",
-            "choices" => "required_if:choice_type,multiple choice, dropdown, checkboxes"
+            "answers" => "array",
+            "answers.*.question_id" => "required|exists:questions,id",
+            "answers.*.value" => function ($att, $value, $fail){
+                $index = Str::after($att, 'answers.');
+                $index = Str::before($index, '.value');
+                $question_id = request('answers')[$index]['question_id'];
+                $question = Question::find($question_id);
+
+                if($question && $question->is_required && empty($value)) {
+                    $fail('answers', 'The answers field is required.');
+                }
+            }
         ];
     }
+
 
     protected function failedValidation(Validator $validator)
     {
