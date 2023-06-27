@@ -10,7 +10,7 @@ Create a form to ask some questions or surveys, invite other users to fill out t
 
 Laravel: ^10
 
-## Instalation
+## Installation
 
 For installation is using sail to contain this application to minimized the installation process
 
