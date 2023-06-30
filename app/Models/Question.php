@@ -21,6 +21,11 @@ class Question extends Model
         'is_required' => 'boolean',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function form()
     {
         return $this->belongsTo(Form::class, 'form_id');

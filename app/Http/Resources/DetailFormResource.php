@@ -23,7 +23,8 @@ class DetailFormResource extends JsonResource
                 'description' => $this->slug,
                 'limit_one_response' => $this->limit_one_response,
                 'creator_id' => $this->creator_id,
-                'allowed_domains' => $this->allowedDomains,
+                'allowed_domains' => $this->allowedDomains->pluck('domain')->toArray(),
+                'questions' => $this->questions
             ],
         ];
     }
