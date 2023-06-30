@@ -2,69 +2,50 @@
 
 namespace App\Services;
 
-use App\Exceptions\ForbiddenAccess;
+use App\Exceptions\DataNotFoundException;
+use App\Exceptions\ForbiddenAccessException;
 use Exception;
 use App\Models\Form;
 use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\SomethingWrongException;
-use App\Services\AllowedDomainService;
 
 class QuestionService
 {
-    public function isUserAllowed($user, $form)
+    public function addFormQuestion($form, $question_data)
     {
-        if($form->creator_id !== $user->id)
-        {
-            throw new ForbiddenAccess('Forbidden access');
-        }
-    }
-
-    public function addQuestion($slug, $dataQuestion, $user)
-    {
-        $form = Form::where("slug", $slug)->first();
-
-        if(empty($form)){
-            throw new NotFoundException('Form not found');
-        }
-
-        $this->isUserAllowed($user, $form);
-
         DB::beginTransaction();
 
         try{
-            $questions = Question::create([
-                "name" => $dataQuestion["name"],
-                "choice_type" => $dataQuestion['choice_type'],
-                "is_required" => $dataQuestion['is_required'] ?? 0,
-                "choices" => isset($dataQuestion['choices']) ? implode(', ', $dataQuestion['choices']) : '',
-                "form_id" => $form['id'],
+            $question = Question::create([
+                "name" => $question_data["name"],
+                "choice_type" => $question_data['choice_type'],
+                "is_required" => $question_data['is_required'] ?? 0,
+                "choices" => isset($question_data['choices']) ? implode(', ', $question_data['choices']) : '',
+                "form_id" => $form->id,
             ]);
 
-
             DB::commit();
-            return $questions;
+
+            return $question;
         } catch (Exception $e) {
             DB::rollback();
+            throw new SomethingWrongException;
         }
     }
 
-    public function removeQuestionForm($slug, int $id, $user)
-    {
-        $form = Form::where('slug', $slug)->first();
-        if(empty($form)){
-            throw new NotFoundException('Form not found');
-        }
-
-
-        $question = Question::where('id', $id)->where('form_id', $form->id)->first();
+    public function getFormQuestion($form, $question_id){
+        $question = $form->questions()->where('id', $question_id)->first();
         if(empty($question)){
             throw new NotFoundException('Question not found');
         }
 
-        $this->isUserAllowed($user, $form);
+        return $question;
+    }
 
+    public function removeFormQuestion($question)
+    {
         try{
             $question->delete();
         } catch (Exception $e) {

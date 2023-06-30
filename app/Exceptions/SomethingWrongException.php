@@ -11,7 +11,7 @@ class SomethingWrongException extends Exception
     public function render(Request $request)
     {
         return response()->json([
-            "message" => 'Something went wrong, Try again.',
+            "message" => 'Currently server is busy. Please try again.',
         ], 500);
     }
 }

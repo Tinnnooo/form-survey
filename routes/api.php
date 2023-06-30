@@ -31,13 +31,16 @@ Route::group(['prefix' => 'v1'], function() {
     });
 
     Route::middleware('auth:sanctum')->group(function() {
-        Route::post('forms', [FormController::class, 'storeForm']);
-        Route::get('forms', [FormController::class, 'getAllUserForm']);
-        Route::get('forms/{form_slug}', [FormController::class, 'getDetailForm']);
-        Route::post('forms/{form_slug}/questions', [QuestionController::class, 'AddQuestionToForm']);
-        Route::delete('forms/{form_slug}/questions/{question_id}', [QuestionController::class, "RemoveQuestionFromForm"]);
-        Route::post('forms/{form_slug}/responses', [ResponseController::class, 'SubmitResponse']);
-        Route::get('forms/{form_slug}/responses', [ResponseController::class, "GetAllFormResponses"]);
+        // For creator
+        Route::post('forms', [FormController::class, 'store']);
+        Route::get('forms', [FormController::class, 'index']);
+        Route::post('forms/{form_slug}/questions', [QuestionController::class, 'store']);
+        Route::delete('forms/{form_slug}/questions/{question_id}', [QuestionController::class, "delete"]);
+        Route::get('forms/{form_slug}/responses', [ResponseController::class, "index"]);
+
+        // For Invited Users
+        Route::get('forms/{form_slug}', [FormController::class, 'show']);
+        Route::post('forms/{form_slug}/responses', [ResponseController::class, 'store']);
     });
 });
 

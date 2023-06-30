@@ -13,4 +13,9 @@ class AllowedDomain extends Model
         'form_id',
         'domain',
     ];
+
+    protected $hidden = [
+        "created_at",
+        "updated_at"
+    ];
 }

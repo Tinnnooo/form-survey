@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Form extends Model
@@ -25,8 +26,15 @@ class Form extends Model
         return $this->hasMany(AllowedDomain::class);
     }
 
-    public function Questions(){
+    public function questions(){
         return $this->hasMany(Question::class);
     }
 
+    public function responses(){
+        return $this->hasMany(Response::class);
+    }
+
+    public function scopeBySlug(Builder $query, string $slug){
+        $query->where('slug', $slug);
+    }
 }

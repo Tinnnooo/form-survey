@@ -7,75 +7,100 @@ use App\Models\Form;
 use App\Models\AllowedDomain;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\DataNotFoundException;
+use App\Exceptions\ForbiddenAccessException;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\SomethingWrongException;
 
 class FormService
 {
-    public function __construct(protected AllowedDomainService $allowedDomainService)
+    public function newForm(array $form_data, $user)
     {
 
-    }
-
-    public function newForm(array $userForm, int $user_id)
-    {
         DB::beginTransaction();
 
         try {
-            $user_form = Form::create([
-                "name" => $userForm['name'],
-                "slug" => $userForm['slug'],
-                "description" => $userForm['description'] ?? "",
-                "limit_one_response" => $userForm['limit_one_response'] ?? false,
-                "creator_id" => $user_id,
+            $form = Form::create([
+                "name" => $form_data['name'],
+                "slug" => $form_data['slug'],
+                "description" => $form_data['description'] ?? "",
+                "limit_one_response" => $form_data['limit_one_response'] ?? false,
+                "creator_id" => $user->id,
             ]);
 
-            $this->storeFormAllowedDomain($userForm, $user_form);
+            $form_allowed_domains = [];
+            foreach($form_data['allowed_domains'] as $domain)
+            {
+                $form_allowed_domains[] = new AllowedDomain([
+                    "domain" => $domain
+                ]);
+            }
+
+            $form->allowedDomains()->saveMany($form_allowed_domains);
 
             DB::commit();
-            return $user_form;
+
+            return $form;
 
         } catch (Exception $e) {
             DB::rollback();
-
+            throw new SomethingWrongException;
         }
     }
 
-    public function storeFormAllowedDomain($userForm, $form)
+    public function getUserForms($user)
     {
-        $form_allowed_domain = [];
-        foreach($userForm['allowed_domains'] as $domain)
-        {
-            $form_allowed_domain[] = new AllowedDomain([
-                "form_id"=> $form->id,
-                "domain" => $domain
-            ]);
+        $forms = $user->forms;
+
+        if ($forms->count() === 0){
+            throw new NotFoundException('No form has been added');
         }
 
-        $form->allowedDomains()->saveMany($form_allowed_domain);
+        return $forms;
     }
 
-    public function getAllUserForm(int $user_id)
+    public function getForm($slug)
     {
-        $user_forms = Form::where('creator_id', $user_id)->get();
-
-        if (empty($user_forms)){
-            throw new DataNotFoundException;
-        }
-
-        return $user_forms;
-    }
-
-    public function getDetailForm($slug)
-    {
-        $form = Form::where("slug", $slug)->first();
+        $form = Form::bySlug($slug)->first();
 
         if(empty($form)){
             throw new NotFoundException('Form not found');
         }
 
-        $this->allowedDomainService->userDomainCheck(auth()->user(), $form);
+        return $form;
+    }
+
+    public function getUserForm($slug, $user){
+        $form = $this->getForm($slug);
+
+        if(!$this->isCreatedByUser($form, $user)){
+            throw new ForbiddenAccessException;
+        }
 
         return $form;
     }
 
+    public function getAllowedForm($slug, $user){
+        $form = $this->getForm($slug);
+
+        if(!$this->isUserDomainAllowed($user, $form)){
+            throw new ForbiddenAccessException;
+        }
+
+        return $form;
+    }
+
+    protected function isUserDomainAllowed($user, $form)
+    {
+        if(empty($form->allowedDomains)){
+            return true;
+        }
+
+        $user_domain = substr(strrchr($user->email, "@"), 1);
+
+        return $form->allowedDomains()->where('domain', $user_domain)->exists();
+    }
+
+    protected function isCreatedByUser($form, $user){
+        return $form->creator_id === $user->id;
+    }
 }

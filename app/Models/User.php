@@ -43,8 +43,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function Responses()
+    public function responses()
     {
         return $this->hasMany(Response::class);
+    }
+
+    public function forms()
+    {
+        return $this->hasMany(Form::class, 'creator_id', 'id');
     }
 }

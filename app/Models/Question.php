@@ -21,11 +21,11 @@ class Question extends Model
         "is_required" => "boolean"
     ];
 
-    public function Form(){
+    public function form(){
         return $this->belongsTo(Form::class, "form_id");
     }
 
-    public function Answers()
+    public function answers()
     {
         return $this->hasMany(Answer::class);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,13 +16,18 @@ class Response extends Model
         "date",
     ];
 
-    public function User()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function Answers()
+    public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function scopeByUser(Builder $query, int $user_id)
+    {
+        $query->where('user_id', $user_id);
     }
 }

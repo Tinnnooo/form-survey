@@ -15,12 +15,12 @@ class Answer extends Model
         "value",
     ];
 
-    public function Response()
+    public function response()
     {
         return $this->belongsTo(Response::class, "response_id");
     }
 
-    public function Question()
+    public function question()
     {
         return $this->belongsTo(Question::class, 'question_id');
     }

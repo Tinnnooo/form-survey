@@ -22,24 +22,31 @@ class FormController extends Controller
 
     }
 
-    public function storeForm(FormRequests $request)
-    {
-        $user_id = Auth::user()->id;
+    /**
+     * For Creator
+     */
 
-        $form = $this->formService->newForm($request->validated(), $user_id);
+    public function store(FormRequests $request)
+    {
+        $form = $this->formService->newForm($request->validated(), Auth::user());
 
         return $this->respondWithSuccess(new StoreFormResource($form));
     }
 
-    public function getAllUserForm()
+    public function index()
     {
-        $forms = $this->formService->getAllUserForm(Auth::user()->id);
+        $forms = $this->formService->getUserForms(Auth::user());
+
         return $this->respondWithSuccess(new FormCollection($forms));
     }
 
-    public function getDetailForm($slug)
+    /**
+     * For invited users to get detail form
+     */
+
+    public function show(string $slug)
     {
-        $form = $this->formService->getDetailForm($slug);
+        $form = $this->formService->getAllowedForm($slug, Auth::user());
 
         return $this->respondWithSuccess(new DetailFormResource($form));
     }

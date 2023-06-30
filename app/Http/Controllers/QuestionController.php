@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Resources\StoreQuestionResource;
+use App\Services\FormService;
 use App\Services\QuestionService;
 use App\Traits\RespondsWithHttpStatus;
 use Illuminate\Http\Request;
@@ -12,20 +13,29 @@ class QuestionController extends Controller
 {
     use RespondsWithHttpStatus;
 
-    public function __construct(protected QuestionService $questionService)
+    public function __construct(protected QuestionService $questionService, protected FormService $formService)
     {
 
     }
 
-    public function AddQuestionToForm($slug, StoreQuestionRequest $request)
+    // For Creator
+
+    public function store($form_slug, StoreQuestionRequest $request)
     {
-        $new_question = $this->questionService->addQuestion($slug, $request->validated(), auth()->user());
-        return $this->respondWithSuccess(new StoreQuestionResource($new_question));
+        $form = $this->formService->getUserForm($form_slug, auth()->user());
+
+        $question = $this->questionService->addFormQuestion($form, $request->validated());
+
+        return $this->respondWithSuccess(new StoreQuestionResource($question));
     }
 
-    public function RemoveQuestionFromForm($slug, $question_id)
+    public function delete($form_slug, $question_id)
     {
-        $this->questionService->removeQuestionForm($slug, $question_id, auth()->user());
+        $form = $this->formService->getUserForm($form_slug, auth()->user());
+
+        $question = $this->questionService->getFormQuestion($form, $question_id);
+
+        $this->questionService->removeFormQuestion($question);
 
         return $this->respondOk("Remove question success");
     }
