@@ -11,9 +11,9 @@ class Response extends Model
     use HasFactory;
 
     protected $fillable = [
-        "form_id",
-        "user_id",
-        "date",
+        'form_id',
+        'user_id',
+        'date',
     ];
 
     public function user()

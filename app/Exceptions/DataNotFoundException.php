@@ -10,7 +10,7 @@ class DataNotFoundException extends Exception
     public function render(Request $request)
     {
         return response()->json([
-            "message" => 'Data is not available'
+            'message' => 'Data is not available',
         ], 404);
     }
 }

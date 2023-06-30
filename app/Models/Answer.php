@@ -10,14 +10,14 @@ class Answer extends Model
     use HasFactory;
 
     protected $fillable = [
-        "response_id",
-        "question_id",
-        "value",
+        'response_id',
+        'question_id',
+        'value',
     ];
 
     public function response()
     {
-        return $this->belongsTo(Response::class, "response_id");
+        return $this->belongsTo(Response::class, 'response_id');
     }
 
     public function question()

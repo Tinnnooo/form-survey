@@ -2,27 +2,23 @@
 
 namespace App\Services;
 
-use App\Exceptions\DataNotFoundException;
-use Exception;
-use App\Models\Form;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\SomethingWrongException;
 use App\Models\Answer;
 use App\Models\Response;
-use Illuminate\Support\Facades\DB;
-use App\Exceptions\ForbiddenAccessException;
-use App\Exceptions\NotFoundException;
-use App\Services\AllowedDomainService;
 use App\Traits\RespondsWithHttpStatus;
-use App\Exceptions\SomethingWrongException;
-use App\Exceptions\UnprocessedDataException;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ResponseService
 {
     use RespondsWithHttpStatus;
 
-    public function getFormResponses($form){
+    public function getFormResponses($form)
+    {
         $responses = $form->responses;
 
-        if($responses->count() === 0){
+        if ($responses->count() === 0) {
             throw new NotFoundException('No Response has been added');
         }
 
@@ -39,16 +35,16 @@ class ResponseService
         DB::beginTransaction();
         try {
             $response = Response::create([
-                "form_id" => $form->id,
-                "user_id" => $user->id,
-                "date" => date('Y-m-d H:i:s'),
+                'form_id' => $form->id,
+                'user_id' => $user->id,
+                'date' => date('Y-m-d H:i:s'),
             ]);
 
             $response_answers = [];
-            foreach($response_data['answers'] as $answer){
+            foreach ($response_data['answers'] as $answer) {
                 $response_answers[] = new Answer([
-                    "question_id" => $answer['question_id'],
-                    "value" => $answer['value'],
+                    'question_id' => $answer['question_id'],
+                    'value' => $answer['value'],
                 ]);
             }
 
@@ -60,5 +56,4 @@ class ResponseService
             throw new SomethingWrongException;
         }
     }
-
 }

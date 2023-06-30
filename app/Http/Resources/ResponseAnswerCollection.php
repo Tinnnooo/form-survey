@@ -15,8 +15,8 @@ class ResponseAnswerCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            "message" => "Get responses success",
-            "responses" => $this->collection
+            'message' => 'Get responses success',
+            'responses' => $this->collection,
         ];
     }
 }

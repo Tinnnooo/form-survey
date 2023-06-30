@@ -15,16 +15,16 @@ class DetailFormResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "message" => "Get form success",
-            "form" => [
-                "id" => $this->id,
-                "name" => $this->name,
-                "slug" => $this->slug,
-                "description" => $this->slug,
-                "limit_one_response" => $this->limit_one_response,
-                "creator_id" => $this->creator_id,
-                "allowed_domains" => $this->allowedDomains
-            ]
+            'message' => 'Get form success',
+            'form' => [
+                'id' => $this->id,
+                'name' => $this->name,
+                'slug' => $this->slug,
+                'description' => $this->slug,
+                'limit_one_response' => $this->limit_one_response,
+                'creator_id' => $this->creator_id,
+                'allowed_domains' => $this->allowedDomains,
+            ],
         ];
     }
 }

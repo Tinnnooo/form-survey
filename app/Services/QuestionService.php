@@ -2,14 +2,11 @@
 
 namespace App\Services;
 
-use App\Exceptions\DataNotFoundException;
-use App\Exceptions\ForbiddenAccessException;
-use Exception;
-use App\Models\Form;
-use App\Models\Question;
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\SomethingWrongException;
+use App\Models\Question;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class QuestionService
 {
@@ -17,13 +14,13 @@ class QuestionService
     {
         DB::beginTransaction();
 
-        try{
+        try {
             $question = Question::create([
-                "name" => $question_data["name"],
-                "choice_type" => $question_data['choice_type'],
-                "is_required" => $question_data['is_required'] ?? 0,
-                "choices" => isset($question_data['choices']) ? implode(', ', $question_data['choices']) : '',
-                "form_id" => $form->id,
+                'name' => $question_data['name'],
+                'choice_type' => $question_data['choice_type'],
+                'is_required' => $question_data['is_required'] ?? 0,
+                'choices' => isset($question_data['choices']) ? implode(', ', $question_data['choices']) : '',
+                'form_id' => $form->id,
             ]);
 
             DB::commit();
@@ -35,9 +32,10 @@ class QuestionService
         }
     }
 
-    public function getFormQuestion($form, $question_id){
+    public function getFormQuestion($form, $question_id)
+    {
         $question = $form->questions()->where('id', $question_id)->first();
-        if(empty($question)){
+        if (empty($question)) {
             throw new NotFoundException('Question not found');
         }
 
@@ -46,7 +44,7 @@ class QuestionService
 
     public function removeFormQuestion($question)
     {
-        try{
+        try {
             $question->delete();
         } catch (Exception $e) {
             throw new SomethingWrongException;

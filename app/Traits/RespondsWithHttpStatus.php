@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 trait RespondsWithHttpStatus
@@ -11,23 +12,22 @@ trait RespondsWithHttpStatus
     public function respondUnprocessed($errors, $status = 422)
     {
         return response()->json([
-            'message' => "Invalid field",
-            "errors" => $errors,
+            'message' => 'Invalid field',
+            'errors' => $errors,
         ], $status);
     }
 
     public function respondOk($message, $status = 200)
     {
         return response()->json([
-            "message" => $message,
+            'message' => $message,
         ], $status);
     }
 
     public function respondNotFound($message, $status = 404)
     {
         return response()->json([
-            "message" => $message,
+            'message' => $message,
         ], $status);
     }
-
 }

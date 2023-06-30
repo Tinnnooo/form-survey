@@ -7,7 +7,6 @@ use App\Http\Resources\StoreQuestionResource;
 use App\Services\FormService;
 use App\Services\QuestionService;
 use App\Traits\RespondsWithHttpStatus;
-use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
@@ -37,6 +36,6 @@ class QuestionController extends Controller
 
         $this->questionService->removeFormQuestion($question);
 
-        return $this->respondOk("Remove question success");
+        return $this->respondOk('Remove question success');
     }
 }

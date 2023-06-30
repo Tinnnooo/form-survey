@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Http\Request;
-use App\Services\FormService;
 use App\Http\Requests\FormRequests;
 use App\Http\Resources\DetailFormResource;
 use App\Http\Resources\FormCollection;
-use Illuminate\Support\Facades\Auth;
-use App\Traits\RespondsWithHttpStatus;
 use App\Http\Resources\StoreFormResource;
-
+use App\Services\FormService;
+use App\Traits\RespondsWithHttpStatus;
+use Illuminate\Support\Facades\Auth;
 
 class FormController extends Controller
 {
@@ -25,7 +22,6 @@ class FormController extends Controller
     /**
      * For Creator
      */
-
     public function store(FormRequests $request)
     {
         $form = $this->formService->newForm($request->validated(), Auth::user());
@@ -43,7 +39,6 @@ class FormController extends Controller
     /**
      * For invited users to get detail form
      */
-
     public function show(string $slug)
     {
         $form = $this->formService->getAllowedForm($slug, Auth::user());

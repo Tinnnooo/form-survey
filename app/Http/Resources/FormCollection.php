@@ -15,8 +15,8 @@ class FormCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            "message" => "Get all forms success",
-            "forms" => $this->collection
+            'message' => 'Get all forms success',
+            'forms' => $this->collection,
         ];
     }
 }

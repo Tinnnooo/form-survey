@@ -10,6 +10,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 class StoreQuestionRequest extends FormRequest
 {
     use RespondsWithHttpStatus;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,10 +27,10 @@ class StoreQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required",
-            "choice_type" => "required|in:short answer,paragraph,date,multiple choice,dropdown,checkboxes",
-            "is_required" => "nullable",
-            "choices" => "required_if:choice_type,multiple choice, dropdown, checkboxes"
+            'name' => 'required',
+            'choice_type' => 'required|in:short answer,paragraph,date,multiple choice,dropdown,checkboxes',
+            'is_required' => 'nullable',
+            'choices' => 'required_if:choice_type,multiple choice, dropdown, checkboxes',
         ];
     }
 

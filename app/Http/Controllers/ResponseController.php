@@ -37,7 +37,7 @@ class ResponseController extends Controller
 
         $form = $this->formService->getAllowedForm($form_slug, $user);
 
-        if($form->limit_one_response && $this->responseService->isFormRespondedByUser($form, $user)){
+        if ($form->limit_one_response && $this->responseService->isFormRespondedByUser($form, $user)) {
             throw new UnprocessedDataException('You can not submit form twice');
         }
 
@@ -45,5 +45,4 @@ class ResponseController extends Controller
 
         return $this->respondOk('Submit response success');
     }
-
 }

@@ -9,7 +9,7 @@ class ForbiddenAccessException extends Exception
     public function render($request)
     {
         return response()->json([
-            'message' => 'Forbidden access'
+            'message' => 'Forbidden access',
         ], 403);
     }
 }

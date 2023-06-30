@@ -9,7 +9,7 @@ class NotFoundException extends Exception
     public function render($request)
     {
         return response()->json([
-            'message' => $this->getMessage()
+            'message' => $this->getMessage(),
         ], 404);
     }
 }

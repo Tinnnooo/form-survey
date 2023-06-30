@@ -15,15 +15,15 @@ class StoreFormResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "message" => "Create form success",
-            "form" => [
-                "name" => $this->name,
-                "slug" => $this->slug,
-                "description" => $this->description,
-                "limit_one_response" => $this->limit_one_response,
-                "creator_id" => $this->creator_id,
-                "id" => $this->id
-            ]
+            'message' => 'Create form success',
+            'form' => [
+                'name' => $this->name,
+                'slug' => $this->slug,
+                'description' => $this->description,
+                'limit_one_response' => $this->limit_one_response,
+                'creator_id' => $this->creator_id,
+                'id' => $this->id,
+            ],
         ];
     }
 }

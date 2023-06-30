@@ -15,15 +15,15 @@ class StoreQuestionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "message" => "Add questions success",
-            "question" => [
-                "name" => $this->name,
-                "choice_type" => $this->choice_type,
-                "is_required" => $this->is_required,
-                "choices" => $this->choices,
-                "form_id" => $this->form_id,
-                "id" => $this->id,
-            ]
+            'message' => 'Add questions success',
+            'question' => [
+                'name' => $this->name,
+                'choice_type' => $this->choice_type,
+                'is_required' => $this->is_required,
+                'choices' => $this->choices,
+                'form_id' => $this->form_id,
+                'id' => $this->id,
+            ],
         ];
     }
 }

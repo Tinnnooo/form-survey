@@ -15,14 +15,14 @@ class ResponseAnswerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "date" => $this->date,
-            "user" => [
-                "id" => $this->user->id,
-                "name" => $this->user->name,
-                "email" => $this->user->email,
-                "email_verified_at" => $this->user->email_verified_at,
+            'date' => $this->date,
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'email_verified_at' => $this->user->email_verified_at,
             ],
-            "answers" => $this->answers->pluck('value','question.name'),
+            'answers' => $this->answers->pluck('value', 'question.name'),
         ];
     }
 }
