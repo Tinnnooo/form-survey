@@ -30,10 +30,4 @@ trait RespondsWithHttpStatus
         ], $status);
     }
 
-    public function respondSomethingWrong($status = 500)
-    {
-        return response()->json([
-            "message" => "Something went wrong, Try again."
-        ], $status);
-    }
 }

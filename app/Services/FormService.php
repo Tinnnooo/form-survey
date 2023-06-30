@@ -15,7 +15,6 @@ class FormService
 {
     public function newForm(array $form_data, $user)
     {
-
         DB::beginTransaction();
 
         try {
