@@ -44,7 +44,7 @@ class ResponseService
             foreach ($response_data['answers'] as $answer) {
                 $response_answers[] = new Answer([
                     'question_id' => $answer['question_id'],
-                    'value' => $answer['value'],
+                    'value' => $answer['value'] ?? "",
                 ]);
             }
 

@@ -27,6 +27,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', [AuthController::class, 'login']);
         Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
+
+
+        // Get Current User
+        Route::middleware('auth:sanctum')->get('/me', [AuthController::class, 'me']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -40,5 +44,6 @@ Route::group(['prefix' => 'v1'], function () {
         // For Invited Users
         Route::get('forms/{form_slug}', [FormController::class, 'show']);
         Route::post('forms/{form_slug}/responses', [ResponseController::class, 'store']);
+
     });
 });

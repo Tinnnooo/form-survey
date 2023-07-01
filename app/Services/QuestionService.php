@@ -45,6 +45,9 @@ class QuestionService
     public function removeFormQuestion($question)
     {
         try {
+            $question->answers->each(function ($answer) {
+                $answer->delete();
+            });
             $question->delete();
         } catch (Exception $e) {
             throw new SomethingWrongException;

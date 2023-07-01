@@ -90,7 +90,7 @@ class FormService
 
     protected function isUserDomainAllowed($user, $form)
     {
-        if (empty($form->allowedDomains)) {
+        if (count($form->allowedDomains) === 0) {
             return true;
         }
 
