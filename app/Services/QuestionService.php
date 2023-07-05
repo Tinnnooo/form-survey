@@ -44,12 +44,19 @@ class QuestionService
 
     public function removeFormQuestion($question)
     {
+        DB::beginTransaction();
         try {
-            $question->answers->each(function ($answer) {
-                $answer->delete();
-            });
+            // $question->answers->each(function ($answer) {
+            //     $answer->delete();
+            // });
+            // $question->delete();
+
+            $question->answers()->delete();
             $question->delete();
+
+            DB::commit();
         } catch (Exception $e) {
+            DB::rollback();
             throw new SomethingWrongException;
         }
     }
